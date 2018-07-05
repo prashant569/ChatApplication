@@ -44,14 +44,14 @@ var openWebSocketAndSubscribe = function(userList) {
 	    var socket = new SockJS('../chatBox/chat-websocket');
 	    stompClient = Stomp.over(socket);
 	    stompClient.connect({}, function (frame) {
-	    	//console.log('Connected: ' + frame);
+	    	console.log('Connected frame : ' + frame);
 	       	 for(const user of userList) {
 	       		 //console.log(" in the looping = " + user.username);
 	       		stompClient.subscribe('/user/'+ user.username+'/reply', function (chat) {
 		        	//console.log("chat =  " + chat);
 		        	var chatBody = JSON.parse(chat.body);
 		        	//console.log("chat body = " + chat.body);
-		            showGreeting(chatBody.chatMessage,chatBody.fromUsername,user.username);
+		            showGreeting(chatBody.chatMessage,chatBody.fromUsername,user.username,chatBody.timeStamp);
 		        });
 	       	 }       
 	    });		
@@ -59,7 +59,7 @@ var openWebSocketAndSubscribe = function(userList) {
 }
 	
 	
-	function showGreeting(message,fromUsername,toUsername) {
+	function showGreeting(message,fromUsername,toUsername,timeStamp) {
 		//console.log("in the showGreeting");
 	   // console.log(" message = " + message);
 	    
@@ -73,7 +73,7 @@ var openWebSocketAndSubscribe = function(userList) {
 	          divAndReply +=   message;
 	          divAndReply +=   '</div>';
 	          divAndReply +=   '<span class="message-time pull-right">';
-	          divAndReply +=   '  Time';
+	          divAndReply +=    timeStamp;
 	          divAndReply +=   ' </span>';
 	          divAndReply +=   '</div>';
 	          divAndReply +=   '</div>';
@@ -81,6 +81,7 @@ var openWebSocketAndSubscribe = function(userList) {
 	    	
 	    		
 	    	  $('.message '+'#'+fromUsername+toUsername).append(divAndReply);
+		    		    	 
 	    	
 	    }
 	    else {
@@ -92,18 +93,25 @@ var openWebSocketAndSubscribe = function(userList) {
 	          divAndReply1 +=   message;
 	          divAndReply1 +=   '</div>';
 	          divAndReply1 +=   '<span class="message-time pull-right">';
-	          divAndReply1 +=   '  Time';
+	          divAndReply1 +=   timeStamp;
 	          divAndReply1 +=   ' </span>';
 	          divAndReply1 +=   '</div>';
 	          divAndReply1 +=   '</div>';
 	          divAndReply1 +=   ' </div>';
 	    	
 	    	 $('.message '+'#'+toUsername+fromUsername).append(divAndReply1);
+	    	 
+	    	
 	    	
 	    }	
 	    
-	    	 $('#comment')[0].value = '';
+	    var mydiv = $("#conversation");
+	    mydiv.scrollTop(mydiv.prop("scrollHeight"));
+	  
+	    
+	    $('#comment')[0].value = '';
 	   
+	    	 
 	}
 	
     $(".heading-compose").click(function() {
@@ -131,10 +139,13 @@ var openWebSocketAndSubscribe = function(userList) {
     	console.log($(".heading-name-meta"));
     	var toUsername = $(".heading-name-meta").attr('id');
     	
+    	var time = moment().format('LT'); 
+    	console.log("current time = " + time);
+    	
     	//console.log('clicked on the send button');
     	if(message !== null && message.length>0) {
     		//console.log("message = " + message);   
-    		var text = JSON.stringify({'chatMessage': message,'toUsername': toUsername,'fromUsername': username})
+    		var text = JSON.stringify({'chatMessage': message,'toUsername': toUsername,'fromUsername': username, 'timeStamp': time})
         	stompClient.send("/app/chat-websocket", {}, text);
         	
     	}   	

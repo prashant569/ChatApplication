@@ -82,13 +82,16 @@
 									 -->
 								</form:form>
 								<form:form id="register-form" action="userRegister" method="post" modelAttribute="userProfile" role="form" style="display: none;">
-									<div class="form-group">
-										<form:input type="text" path="firstName" name="firstName" id="firstName" tabindex="1" class="form-control" placeholder="First Name" value="" />
-									</div>
-									<div class="form-group">
-										<form:input type="text" path="lastName" name="lastName" id="lastName" tabindex="1" class="form-control" placeholder="Last Name" value="" />
-									</div>
-									
+									<div class="form-group" >
+										<div class="row" >
+											<div class="col-xs-6"> 
+												<form:input type="text" path="firstName" name="firstName" id="firstName" tabindex="1" class="form-control" placeholder="First Name" value="" />
+											</div>
+											<div class="col-xs-6">
+												<form:input type="text" path="lastName" name="lastName" id="lastName" tabindex="1" class="form-control" placeholder="Last Name" value="" />
+											</div>
+										</div>										
+									 </div>
 									<div class="form-group">
 										<form:input type="text" path="username" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="" />
 										

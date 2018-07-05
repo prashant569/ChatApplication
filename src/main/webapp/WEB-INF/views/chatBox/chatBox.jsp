@@ -9,12 +9,13 @@
     <spring:url value="../resources/sockjs.js" var="sockJsUrl"></spring:url>
     <spring:url value="../resources/stomp.js" var="stompJsUrl"></spring:url> 
     <spring:url value="../resources/font-awesome-4.7.0/css/font-awesome.css" var="fontAwesomeCssUrl" />
+    <spring:url value="../resources/moment.js" var="momentJsUrl"></spring:url>
     
 	<%@ include file="../commonFiles.jsp" %>
     
     <script src="${sockJsUrl}"></script>
     <script src="${stompJsUrl}"></script>
-    
+   <script src="${momentJsUrl}"></script>
 	<script src="../resources/chatBox/chatBox.js"></script>
 	<link href="../resources/chatBox/chatBox.css" rel="stylesheet" />
 	<link rel="stylesheet" href="${fontAwesomeCssUrl}">
