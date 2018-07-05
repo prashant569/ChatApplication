@@ -4,18 +4,28 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>JavaSpringWebApp</title>
+    <title>Chat Box</title>
     <meta name="description" content="" />
-
+    
     <spring:url value="/resources/gradients.css" var="gradientsCss" />
     <spring:url value="/resources/styles.css" var="stylesCss" />
-    <spring:url value="/resources/set-background.js" var="setBackgroundJs" />
+    <spring:url value="resources/set-background.js" var="setBackgroundJs" />
     <spring:url value="/resources/tweet.svg" var="tweetSvg" />
-
+    <spring:url value="/user/list" var="listURL" />
+    <spring:url value="/cryptocurrency/coinmarketcap" var="cryptocurrencyListURL" />
+	<spring:url value="/chatBox/chatBox" var="chatBoxUrl" />
+	<spring:url value="/login/login" var="LoginAndRegisterUrl" />
+	<spring:url value="/login/logout" var="logoutUrl" />
+	<spring:url value="/" var="homeUrl" />
+	
     <link href="${stylesCss}" rel="stylesheet">
     <link href="${gradientsCss}" rel="stylesheet">
+    <script src="${setBackgroundJs}"></script>
+    
+    
   </head>
-  <body class="">
+  
+ <body class="">  
     <div class="wrapper">
       <div class="graphics">
         <div class="tower">
@@ -29,32 +39,49 @@
         </div>
       </div>
 
-      <header>
+	 <header>
         <nav class="website-nav">
           <ul>
-            <li><a class="home-link" href="https://aws.amazon.com/">Home</a></li>
-            <li><a href="https://aws.amazon.com/what-is-cloud-computing/">About</a></li>
-            <li><a href="https://aws.amazon.com/solutions/">Services</a></li>
-            <li><a href="https://aws.amazon.com/contact-us/">Contact</a></li>
+          	<li><a href="${homeUrl}">Home</a></li>
+                    
+            
+            <%
+            	String username = (String)session.getAttribute("username");
+            	if(username==null)	{
+            %>            
+            	<li><a href="${LoginAndRegisterUrl}">Login</a></li>
+            <%
+            	} else {
+            %>
+             	<li><a href="${listURL}">User List</a></li>  
+            	<li><a href="${chatBoxUrl}">ChatBox</a></li>
+            	<li><a href="${logoutUrl}">Logout</a></li>
+            <%
+           		}
+            %>
+            
+            
           </ul>
         </nav>
-      </header>
+	</header>
+  
 
       <div class="message">
-          <a class="twitter-link" href="http://twitter.com/home/?status=I%20created%20a%20project%20with%20AWS%20CodeStar!%20%23AWS%20%23AWSCodeStar%20https%3A%2F%2Faws.amazon.com%2Fcodestar">
+          <a class="twitter-link" href="#">
               <img src="${tweetSvg}" alt="Tweet"/>
           </a>
         <div class="text">
-          <h1>Congratulations!</h1>
-          <h2>You just created a Java Spring web application.</h2>
+          <h2>Welcome to Chat Box</h2>
         </div>
       </div>
     </div>
 
+	
+
     <footer>
-      <p class="footer-contents">Designed and developed with <a href="https://aws.amazon.com/careers/devtools-jobs/">♥</a> in Seattle.</p>
+      <p class="footer-contents">Designed and developed by Shivam</p>
     </footer>
 
-    <script src={$setBackgroundJs}"></script>
+    
   </body>
 </html>
