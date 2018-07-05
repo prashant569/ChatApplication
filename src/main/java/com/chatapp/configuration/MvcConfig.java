@@ -45,7 +45,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public MongoDbFactory mongoDbFactory() {
-    	return new SimpleMongoDbFactory(new MongoClient("localhost",27017), "CryptoWorld");
+    	return new SimpleMongoDbFactory(new MongoClient("localhost",27017), "ChatApp");
     }
     
     @Bean

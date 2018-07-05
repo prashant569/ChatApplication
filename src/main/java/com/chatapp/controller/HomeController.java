@@ -10,11 +10,11 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequestMapping("/")
-public class HelloWorldController {
+public class HomeController {
 
     private final String siteName;
 
-    public HelloWorldController(final String siteName) {
+    public HomeController(final String siteName) {
         this.siteName = siteName;
     }
 

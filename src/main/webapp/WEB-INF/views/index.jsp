@@ -42,8 +42,7 @@
 	 <header>
         <nav class="website-nav">
           <ul>
-          	<li><a href="${homeUrl}">Home</a></li>
-                    
+          	<li><a href="${homeUrl}">Home</a></li>     
             
             <%
             	String username = (String)session.getAttribute("username");
@@ -53,7 +52,13 @@
             <%
             	} else {
             %>
-             	<li><a href="${listURL}">User List</a></li>  
+            	 	<%    
+				    	if((String)session.getAttribute("isAdmin") != null) {
+				    %>
+				    	<li><a href="${listURL}">User List</a></li>
+				    <%
+						}
+				    %>
             	<li><a href="${chatBoxUrl}">ChatBox</a></li>
             	<li><a href="${logoutUrl}">Logout</a></li>
             <%

@@ -8,7 +8,7 @@ import com.chatapp.configuration.MvcConfig;
 /**
  * Utility to initialize the Spring MVC HelloWorld application.
  */
-public class HelloWorldAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class ChatAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -25,7 +25,7 @@ public class HelloWorldAppInitializer extends AbstractAnnotationConfigDispatcher
     @Override
     protected String[] getServletMappings() {
         return new String[] {
-                "/"
+                "/",
         };
     }
 

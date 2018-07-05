@@ -12,14 +12,21 @@
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="${homeUrl}">Chat Box</a>
+      <a class="navbar-brand" href="${homeUrl}">Home</a>
     </div>
     <ul class="nav navbar-nav">
-      <li><a href="${listURL}">User List</a></li>
+    
+    <%    
+    	if((String)session.getAttribute("isAdmin") != null) {
+    %>
+    	<li><a href="${listURL}">User List</a></li>
+    <%
+		}
+    %>
            
 	   <%
 	    	String username = (String)session.getAttribute("username");
-	   		if(username!=null) {
+	   		if(username != null) {
 	   %>
       <li><a href="${chatBoxUrl}">Chat Box</a></li>
       <%

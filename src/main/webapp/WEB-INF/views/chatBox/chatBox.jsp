@@ -15,8 +15,8 @@
     <script src="${sockJsUrl}"></script>
     <script src="${stompJsUrl}"></script>
     
-	<script src="../resources/chatBox/chatBox2.js"></script>
-	<link href="../resources/chatBox/chatBox2.css" rel="stylesheet" />
+	<script src="../resources/chatBox/chatBox.js"></script>
+	<link href="../resources/chatBox/chatBox.css" rel="stylesheet" />
 	<link rel="stylesheet" href="${fontAwesomeCssUrl}">
 	 
     
@@ -72,7 +72,7 @@
                   <span class="name-meta" id="lastName">${user.lastName} </span>
                 </div>
                 <div class="col-sm-4 col-xs-4 pull-right sideBar-time">
-                  <span class="time-meta pull-right">18:18
+                  <span class="time-meta pull-right">Time
                 </span>
                 </div>
               </div>
@@ -89,7 +89,7 @@
       <div class="row heading">
         <div class="col-sm-2 col-md-1 col-xs-3 heading-avatar">
           <div class="heading-avatar-icon">
-            <img src="https://bootdey.com/img/Content/avatar/avatar6.png">
+            <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
           </div>
         </div>
         <div class="col-sm-8 col-xs-7 heading-name">

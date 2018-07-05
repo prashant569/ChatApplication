@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,6 +23,16 @@ public class LoginAndRegisterController {
 	@Autowired
 	UserService userService;
 	
+	@RequestMapping(method = RequestMethod.GET)
+	public ModelAndView showLoginForm1() {
+		ModelAndView mv = new ModelAndView();
+		System.out.println(" in the showLoginForm method");
+		mv.addObject("userProfile",new UserProfile());
+		mv.addObject("loginFormClassValue","active");
+		mv.setViewName("LoginAndRegister/LoginAndRegister");
+		return mv;
+	}
+	
 	@RequestMapping(value="/register")
 	public ModelAndView showRegisterForm() {
 		ModelAndView mv = new ModelAndView();
@@ -32,7 +43,7 @@ public class LoginAndRegisterController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/login")
+	@RequestMapping(value="/login",method = RequestMethod.GET)
 	public ModelAndView showLoginForm() {
 		ModelAndView mv = new ModelAndView();
 		System.out.println(" in the showLoginForm method");
@@ -66,6 +77,13 @@ public class LoginAndRegisterController {
 			session.setAttribute("username", userProfile.getUsername());
 			session.setAttribute("firstName", loggedinUser.getFirstName());
 			session.setAttribute("lastName",loggedinUser.getLastName());
+			
+			session.setAttribute("isAdmin", loggedinUser.getIsAdmin());
+			
+			System.out.println(" in java isAdmin = " + loggedinUser.getIsAdmin());
+			
+			
+			
 			return "redirect:/chatBox/chatBox";
 		}
 		else {
@@ -73,6 +91,7 @@ public class LoginAndRegisterController {
 		}
 		
 	}
+	
 	
 	@RequestMapping("/userRegister")
 	public String register(@ModelAttribute UserProfile userProfile) {

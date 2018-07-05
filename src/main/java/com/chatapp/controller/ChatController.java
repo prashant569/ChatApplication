@@ -48,7 +48,7 @@ public class ChatController {
 	@RequestMapping("/chatBox")
 	public ModelAndView welcome(HttpServletRequest request) {
 		System.out.println("in the chat controller - welcome method");		
-		ModelAndView mv =  new ModelAndView("chatBox/chatBox2");
+		ModelAndView mv =  new ModelAndView("chatBox/chatBox");
 		
 		List<UserProfile> users = getAllUserList();
 		HttpSession session = request.getSession();

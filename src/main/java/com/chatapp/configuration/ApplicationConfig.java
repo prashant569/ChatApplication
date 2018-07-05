@@ -8,15 +8,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import com.chatapp.controller.ChatController;
-import com.chatapp.controller.HelloWorldController;
+import com.chatapp.controller.HomeController;
 import com.chatapp.controller.LoginAndRegisterController;
 import com.chatapp.controller.UserController;
 import com.chatapp.dao.UserDao;
 import com.chatapp.dao.UserDaoImpl;
 import com.chatapp.service.UserService;
 import com.chatapp.service.UserServiceImpl;
-
-
 
 
 /**
@@ -30,12 +28,12 @@ public class ApplicationConfig {
     /**
      * Retrieved from properties file.
      */
-    @Value("${HelloWorld.SiteName}")
+    @Value("${ChatApp.SiteName}")
     private String siteName;
 
     @Bean
-    public HelloWorldController helloWorld() {
-        return new HelloWorldController(this.siteName);
+    public HomeController helloWorld() {
+        return new HomeController(this.siteName);
     }
     
    

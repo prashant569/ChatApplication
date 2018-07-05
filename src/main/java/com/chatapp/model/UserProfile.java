@@ -13,13 +13,13 @@ public class UserProfile {
 	private String lastName;
 	private String username;
 	private String password;
+	private String isAdmin;
+
 	
 	public UserProfile() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
 	
 	public UserProfile(String firstName, String lastName, String username, String password) {
 		super();
@@ -70,6 +70,14 @@ public class UserProfile {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(String isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 
 	

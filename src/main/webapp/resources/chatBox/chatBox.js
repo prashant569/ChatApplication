@@ -73,7 +73,7 @@ var openWebSocketAndSubscribe = function(userList) {
 	          divAndReply +=   message;
 	          divAndReply +=   '</div>';
 	          divAndReply +=   '<span class="message-time pull-right">';
-	          divAndReply +=   '  Sun';
+	          divAndReply +=   '  Time';
 	          divAndReply +=   ' </span>';
 	          divAndReply +=   '</div>';
 	          divAndReply +=   '</div>';
@@ -92,7 +92,7 @@ var openWebSocketAndSubscribe = function(userList) {
 	          divAndReply1 +=   message;
 	          divAndReply1 +=   '</div>';
 	          divAndReply1 +=   '<span class="message-time pull-right">';
-	          divAndReply1 +=   '  Sun';
+	          divAndReply1 +=   '  Time';
 	          divAndReply1 +=   ' </span>';
 	          divAndReply1 +=   '</div>';
 	          divAndReply1 +=   '</div>';
