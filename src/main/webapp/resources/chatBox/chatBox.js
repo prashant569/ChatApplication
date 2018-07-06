@@ -41,10 +41,61 @@ $(function(){
 var openWebSocketAndSubscribe = function(userList) {
 		
 	if(socket==null && username !== null && username.length>0) {
-	    var socket = new SockJS('../chatBox/chat-websocket');
+	    socket = new SockJS('../chatBox/chat-websocket');
 	    stompClient = Stomp.over(socket);
+	  	    
 	    stompClient.connect({}, function (frame) {
 	    	console.log('Connected frame : ' + frame);
+	    	
+	    	stompClient.subscribe('/user/allusersgroup', function (chat) {
+	        	//console.log("chat =  " + chat);
+	        	var chatBody = JSON.parse(chat.body);
+	        	//console.log("chat body = " + chat.body);
+	            showGreeting(chatBody.chatMessage,chatBody.fromUsername,"allusersgroup",chatBody.timeStamp);
+	        });
+	    	
+	    	stompClient.subscribe('/user', function (chat) {
+	        	//console.log("chat =  " + chat);
+	        	var chatBody = JSON.parse(chat.body);
+	        	//console.log("chat body = " + chat.body);
+	            showGreeting(chatBody.chatMessage,chatBody.fromUsername,"allusersgroup",chatBody.timeStamp);
+	        });
+	    	
+	    	stompClient.subscribe('/user/', function (chat) {
+	        	//console.log("chat =  " + chat);
+	        	var chatBody = JSON.parse(chat.body);
+	        	//console.log("chat body = " + chat.body);
+	            showGreeting(chatBody.chatMessage,chatBody.fromUsername,"allusersgroup",chatBody.timeStamp);
+	        });
+	    	
+	    	stompClient.subscribe('allusersgroup', function (chat) {
+	        	//console.log("chat =  " + chat);
+	        	var chatBody = JSON.parse(chat.body);
+	        	//console.log("chat body = " + chat.body);
+	            showGreeting(chatBody.chatMessage,chatBody.fromUsername,"allusersgroup",chatBody.timeStamp);
+	        });
+	    	
+	    	stompClient.subscribe('/allusersgroup', function (chat) {
+	        	//console.log("chat =  " + chat);
+	        	var chatBody = JSON.parse(chat.body);
+	        	//console.log("chat body = " + chat.body);
+	            showGreeting(chatBody.chatMessage,chatBody.fromUsername,"allusersgroup",chatBody.timeStamp);
+	        });
+	    	
+	    	stompClient.subscribe('/user/allusersgroup', function (chat) {
+	        	//console.log("chat =  " + chat);
+	        	var chatBody = JSON.parse(chat.body);
+	        	//console.log("chat body = " + chat.body);
+	            showGreeting(chatBody.chatMessage,chatBody.fromUsername,"allusersgroup",chatBody.timeStamp);
+	        });
+	    	
+	    	stompClient.subscribe('/user/allusersgroup/reply', function (chat) {
+	        	//console.log("chat =  " + chat);
+	        	var chatBody = JSON.parse(chat.body);
+	        	//console.log("chat body = " + chat.body);
+	            showGreeting(chatBody.chatMessage,chatBody.fromUsername,"allusersgroup",chatBody.timeStamp);
+	        });
+	    	
 	       	 for(const user of userList) {
 	       		 //console.log(" in the looping = " + user.username);
 	       		stompClient.subscribe('/user/'+ user.username+'/reply', function (chat) {
@@ -53,7 +104,9 @@ var openWebSocketAndSubscribe = function(userList) {
 		        	//console.log("chat body = " + chat.body);
 		            showGreeting(chatBody.chatMessage,chatBody.fromUsername,user.username,chatBody.timeStamp);
 		        });
-	       	 }       
+	       	 }
+	       	 
+	       	 	       	 
 	    });		
 	}
 }
@@ -79,8 +132,14 @@ var openWebSocketAndSubscribe = function(userList) {
 	          divAndReply +=   '</div>';
 	          divAndReply +=   ' </div>';
 	    	
-	    		
-	    	  $('.message '+'#'+fromUsername+toUsername).append(divAndReply);
+	          if(toUsername==="allusersgroup") {
+	        	 $('.message '+'#allusersgroup').append(divAndReply);
+	        	  console.log($('.message'+'#allusersgroup'));
+	    		}
+	          else {
+	        	  $('.message '+'#'+fromUsername+toUsername).append(divAndReply);
+	          }
+	    	 
 		    		    	 
 	    	
 	    }
@@ -99,7 +158,14 @@ var openWebSocketAndSubscribe = function(userList) {
 	          divAndReply1 +=   '</div>';
 	          divAndReply1 +=   ' </div>';
 	    	
-	    	 $('.message '+'#'+toUsername+fromUsername).append(divAndReply1);
+	          if(toUsername==="allusersgroup") {
+	        	  $('.message '+'#allusersgroup').append(divAndReply1);
+	        	  console.log($('.message'+'#allusersgroup'));
+	    		}
+	          else {
+	        	  $('.message '+'#'+toUsername+fromUsername).append(divAndReply1);
+	          }
+	    	
 	    	 
 	    	
 	    	
@@ -168,8 +234,15 @@ var openWebSocketAndSubscribe = function(userList) {
     	$('.heading-name-meta').attr('id',clickedUsername);
     	//console.log('you clicked on ' + clickedUsername);
     	
-    	var divId = username+clickedUsername;
+    	var divId = null;
     	
+    	if(clickedUsername=="allusersgroup") {
+    		divId = clickedUsername;
+    	}
+    	else {
+    		divId  = username+clickedUsername;
+    	}
+    		
     	 $(".message").children().filter(':not(#'+divId+')').hide();
     	 $(".message").children().filter('#'+divId).show();
     

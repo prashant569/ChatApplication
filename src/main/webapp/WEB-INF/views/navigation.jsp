@@ -28,7 +28,7 @@
 	    	String username = (String)session.getAttribute("username");
 	   		if(username != null) {
 	   %>
-      <li><a href="${chatBoxUrl}">Chat Box</a></li>
+      		<li><a href="${chatBoxUrl}">Chat Box</a></li>
       <%
 	   		}
       %>

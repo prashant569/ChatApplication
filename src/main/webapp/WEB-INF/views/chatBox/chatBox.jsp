@@ -58,6 +58,27 @@
 
         <div class="row sideBar">
         
+        <div class="row sideBar-body" id="allusersgroup" >
+            <div class="col-sm-3 col-xs-3 sideBar-avatar">
+              <div class="avatar-icon">
+                <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
+              </div>
+            </div>
+            <div class="col-sm-9 col-xs-9 sideBar-main">
+              <div class="row">
+                <div class="col-sm-8 col-xs-8 sideBar-name">
+                  <span class="name-meta" id="firstName">All Users </span>
+                  <span class="name-meta" id="lastName">Group </span>
+                </div>
+                <div class="col-sm-4 col-xs-4 pull-right sideBar-time">
+                  <span class="time-meta pull-right">Time
+                </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        
         <c:forEach items="${userList}" var="user">
         
         	<div class="row sideBar-body" id="${user.username}" >
@@ -79,6 +100,8 @@
               </div>
             </div>
           </div>
+          
+          
         </c:forEach>
         
         </div>
@@ -106,6 +129,8 @@
 	  
       <div class="row message" id="conversation">
        
+       <div id="allusersgroup">      
+		</div>
 
 	<c:forEach items="${userList}" var="user">
 		<div id="${currentUser}${user.username}">      

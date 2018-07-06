@@ -38,24 +38,41 @@ public class ChatController {
 	}
 	**/
 	
+
 	@MessageMapping("/chat-websocket")
+	@SendTo("/topic/greetings")
 	public void sendReply(Chat chat) {
-		System.out.println("in the send reply method");
-		System.out.println("chat = " + chat.getToUsername() + "  " + chat.getFromUsername() + "  " + chat.getChatMessage());
-		simpMessagingTemplate.convertAndSendToUser(chat.getToUsername(),"/reply", chat);
+
+		System.out.println("in the send reply method");		
+		
+		if(chat.getToUsername().equals("allusersgroup")) {
+			System.out.println("chat = " + chat.getToUsername() + "  " + chat.getFromUsername() + "  " + chat.getChatMessage());
+			
+			System.out.println( "simpMessagingTemplate.getDefaultDestination() = " + simpMessagingTemplate.getDefaultDestination()
+			
+					+ "\n simpMessagingTemplate.getUserDestinationPrefix() = " + simpMessagingTemplate.getUserDestinationPrefix()
+					
+					+ "\n  simpMessagingTemplate.getMessageChannel()  = " + simpMessagingTemplate.getMessageChannel() 
+					+ "\n  simpMessagingTemplate.getMessageConverter()  = " + simpMessagingTemplate.getMessageConverter()
+					);
+			
+			simpMessagingTemplate.convertAndSend("allusersgroup", chat);
+			simpMessagingTemplate.convertAndSendToUser("allusersgroup","/reply", chat);
+		}
+		else {
+			System.out.println("chat = " + chat.getToUsername() + "  " + chat.getFromUsername() + "  " + chat.getChatMessage());
+			simpMessagingTemplate.convertAndSendToUser(chat.getToUsername(),"/reply", chat);
+		}
+		
+		
 	}
 	
 	@RequestMapping("/chatBox")
-	public ModelAndView welcome(HttpServletRequest request) {
-		System.out.println("in the chat controller - welcome method");		
-		ModelAndView mv =  new ModelAndView("chatBox/chatBox");
-		
+	public ModelAndView welcome(HttpServletRequest request) {	
+		ModelAndView mv =  new ModelAndView("chatBox/chatBox");		
 		List<UserProfile> users = getAllUserList();
 		HttpSession session = request.getSession();
 		String username = (String)session.getAttribute("username");
-		System.out.println(" in welcome method = " + session.getAttribute("firstName") + "  " 
-		+ session.getAttribute("lastName"));
-		System.out.println("username = "+ username);
 		if(username != null)	{
 			users.removeIf(x -> x.getUsername().equals(username));
 			System.out.println("users = "+ users);
@@ -85,9 +102,7 @@ public class ChatController {
 	@RequestMapping("/GetAllUserList")
 	@ResponseBody
 	public List<UserProfile> getAllUserList(HttpServletRequest request) {
-		
-		System.out.println("in the GetAllUserList meethod");
-		
+				
 		List<UserProfile> users = null;
 		
 		try {
@@ -101,17 +116,5 @@ public class ChatController {
 		}
 		
 	}
-	
-	
-	
-	/**
-	@MessageMapping("/gs-guide-websocket")
-	@SendTo("/topic/greetings")
-	public String broadcastMessage(User user, Chat chat) throws Exception {
-		System.out.println("in the chat controller - broadcastMessaage method");
-		Thread.sleep(1000);
-		return user.getName().toString() + " :  " + chat.getChatMessage().toString();		
-	}
-	**/
 	
 }
