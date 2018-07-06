@@ -46,49 +46,7 @@ var openWebSocketAndSubscribe = function(userList) {
 	  	    
 	    stompClient.connect({}, function (frame) {
 	    	console.log('Connected frame : ' + frame);
-	    	
-	    	stompClient.subscribe('/user/allusersgroup', function (chat) {
-	        	//console.log("chat =  " + chat);
-	        	var chatBody = JSON.parse(chat.body);
-	        	//console.log("chat body = " + chat.body);
-	            showGreeting(chatBody.chatMessage,chatBody.fromUsername,"allusersgroup",chatBody.timeStamp);
-	        });
-	    	
-	    	stompClient.subscribe('/user', function (chat) {
-	        	//console.log("chat =  " + chat);
-	        	var chatBody = JSON.parse(chat.body);
-	        	//console.log("chat body = " + chat.body);
-	            showGreeting(chatBody.chatMessage,chatBody.fromUsername,"allusersgroup",chatBody.timeStamp);
-	        });
-	    	
-	    	stompClient.subscribe('/user/', function (chat) {
-	        	//console.log("chat =  " + chat);
-	        	var chatBody = JSON.parse(chat.body);
-	        	//console.log("chat body = " + chat.body);
-	            showGreeting(chatBody.chatMessage,chatBody.fromUsername,"allusersgroup",chatBody.timeStamp);
-	        });
-	    	
-	    	stompClient.subscribe('allusersgroup', function (chat) {
-	        	//console.log("chat =  " + chat);
-	        	var chatBody = JSON.parse(chat.body);
-	        	//console.log("chat body = " + chat.body);
-	            showGreeting(chatBody.chatMessage,chatBody.fromUsername,"allusersgroup",chatBody.timeStamp);
-	        });
-	    	
-	    	stompClient.subscribe('/allusersgroup', function (chat) {
-	        	//console.log("chat =  " + chat);
-	        	var chatBody = JSON.parse(chat.body);
-	        	//console.log("chat body = " + chat.body);
-	            showGreeting(chatBody.chatMessage,chatBody.fromUsername,"allusersgroup",chatBody.timeStamp);
-	        });
-	    	
-	    	stompClient.subscribe('/user/allusersgroup', function (chat) {
-	        	//console.log("chat =  " + chat);
-	        	var chatBody = JSON.parse(chat.body);
-	        	//console.log("chat body = " + chat.body);
-	            showGreeting(chatBody.chatMessage,chatBody.fromUsername,"allusersgroup",chatBody.timeStamp);
-	        });
-	    	
+
 	    	stompClient.subscribe('/user/allusersgroup/reply', function (chat) {
 	        	//console.log("chat =  " + chat);
 	        	var chatBody = JSON.parse(chat.body);

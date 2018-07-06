@@ -40,7 +40,6 @@ public class ChatController {
 	
 
 	@MessageMapping("/chat-websocket")
-	@SendTo("/topic/greetings")
 	public void sendReply(Chat chat) {
 
 		System.out.println("in the send reply method");		
@@ -56,7 +55,7 @@ public class ChatController {
 					+ "\n  simpMessagingTemplate.getMessageConverter()  = " + simpMessagingTemplate.getMessageConverter()
 					);
 			
-			simpMessagingTemplate.convertAndSend("allusersgroup", chat);
+			//simpMessagingTemplate.convertAndSend("/allusersgroup", chat);
 			simpMessagingTemplate.convertAndSendToUser("allusersgroup","/reply", chat);
 		}
 		else {
