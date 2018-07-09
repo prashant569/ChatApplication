@@ -119,7 +119,6 @@ var openWebSocketAndSubscribe = function(userList) {
 	    	
 	          if(toUsername==="allusersgroup") {
 	        	  $('.message '+'#allusersgroup').append(divAndReply);
-	        	  console.log($('.message'+'#allusersgroup'));
 	    		}
 	          else {
 	        	  $('.message '+'#'+toUsername+fromUsername).append(divAndReply);
@@ -196,7 +195,7 @@ var openWebSocketAndSubscribe = function(userList) {
 			success: function(result) {
 				stompClient1.send("/app/userstate-websocket", {}, JSON.stringify(result));			}
     	})
-    	},3000); 
+    	},3600000); 
     
     
     
