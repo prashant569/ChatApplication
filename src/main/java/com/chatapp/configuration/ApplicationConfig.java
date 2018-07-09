@@ -61,8 +61,8 @@ public class ApplicationConfig {
     public LoginAndRegisterController loginAndRegisterController() {
     	return new LoginAndRegisterController();
     }
-    
 
+    
     /**
      * Required to inject properties using the 'Value' annotation.
      */

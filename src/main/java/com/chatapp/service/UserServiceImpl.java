@@ -1,5 +1,6 @@
 package com.chatapp.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +57,16 @@ public class UserServiceImpl implements UserService {
 		return userDao.checkCredentials(username, password);
 	}
 
+	@Override
+	public HashMap<String, Boolean> getUsersState() {
+		return userDao.getUsersState();
+	}
+
+	@Override
+	public void updateUserState(String username, boolean isOnline) {
+		userDao.updateUserState(username,isOnline);
+	}
+
+	
 	
 }

@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Crypto World : Login</title>
+<title>Chat App : Login</title>
 
 <spring:url value="/resources/LoginAndRegister/LoginAndRegister.js" var="loginAndRegisterJsUrl" />
 <spring:url value="/resources/LoginAndRegister/LoginAndRegister.css" var="loginAndRegisterCssUrl" />
@@ -19,7 +19,7 @@
 <spring:url value="/cryptocurrency/coinmarketcap" var="cryptocurrencyListURL" />
 <spring:url value="/chatBox/chatBox" var="chatBoxUrl" />
 <spring:url value="/login" var="LoginAndRegisterUrl" />
-
+<spring:url value="/login/userLogin" var="userLoginUrl"></spring:url>
 
 <%@ include file="../commonFiles.jsp" %>
 
@@ -52,13 +52,14 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-lg-12">
-								<form:form id="login-form" action="userLogin" modelAttribute="userProfile" method="post" role="form" style="display: block;">
+								<form:form id="login-form" action="${userLoginUrl}" modelAttribute="userProfile" method="post" role="form" style="display: block;">
 									<div class="form-group">
 										<form:input type="text" path="username" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value=""/>
 									</div>
 									<div class="form-group">
 										<form:input type="password" path="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password"/>
 									</div>
+							
 									<div>
 										<label id="login-message" class="text-danger"></label>
 									</div>

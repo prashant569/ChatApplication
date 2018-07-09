@@ -1,5 +1,6 @@
 package com.chatapp.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.chatapp.model.UserProfile;
@@ -15,4 +16,6 @@ public interface UserService {
 	public UserProfile findUserById(String id);
 	public UserProfile findUserByUsername(String username);
 	public boolean checkCredentials(String username,String password);
+	public HashMap<String,Boolean> getUsersState();
+	public void updateUserState(String username, boolean isOnline);
 }

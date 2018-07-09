@@ -6,25 +6,29 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+
 import com.mongodb.MongoClient;
 
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
 
 /**
  * Spring configuration for MVC resolvers.
  */
+
 @EnableWebMvc
 @Configuration
-@Import({ ApplicationConfig.class })
+@Import({ ApplicationConfig.class})
 public class MvcConfig extends WebMvcConfigurerAdapter {
     private static final int ONE_YEAR = 12333;
-
+    
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(ONE_YEAR);
@@ -52,4 +56,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
     public MongoTemplate mongoTemplate() {
     	return new MongoTemplate(mongoDbFactory());
     }
+    
+    
+   
 }

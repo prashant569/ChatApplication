@@ -2,11 +2,15 @@ package com.chatapp.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import com.chatapp.model.Chat;
 import com.chatapp.model.UserProfile;
 import com.chatapp.service.UserService;
+
+import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -38,6 +42,16 @@ public class ChatController {
 	}
 	**/
 	
+	@MessageMapping("/userstate-websocket")
+	@SendTo("/topic/userstate")
+	public HashMap<String,Boolean> sendUserState(HashMap<String,Boolean> userstate) {
+
+		System.out.println("in the send User State method = "+ userstate);	
+		
+		//simpMessagingTemplate.convertAndSend("userstate", chat);
+		return userstate;
+	}
+	
 
 	@MessageMapping("/chat-websocket")
 	public void sendReply(Chat chat) {
@@ -45,25 +59,12 @@ public class ChatController {
 		System.out.println("in the send reply method");		
 		
 		if(chat.getToUsername().equals("allusersgroup")) {
-			System.out.println("chat = " + chat.getToUsername() + "  " + chat.getFromUsername() + "  " + chat.getChatMessage());
-			
-			System.out.println( "simpMessagingTemplate.getDefaultDestination() = " + simpMessagingTemplate.getDefaultDestination()
-			
-					+ "\n simpMessagingTemplate.getUserDestinationPrefix() = " + simpMessagingTemplate.getUserDestinationPrefix()
-					
-					+ "\n  simpMessagingTemplate.getMessageChannel()  = " + simpMessagingTemplate.getMessageChannel() 
-					+ "\n  simpMessagingTemplate.getMessageConverter()  = " + simpMessagingTemplate.getMessageConverter()
-					);
-			
-			//simpMessagingTemplate.convertAndSend("/allusersgroup", chat);
 			simpMessagingTemplate.convertAndSendToUser("allusersgroup","/reply", chat);
 		}
 		else {
-			System.out.println("chat = " + chat.getToUsername() + "  " + chat.getFromUsername() + "  " + chat.getChatMessage());
 			simpMessagingTemplate.convertAndSendToUser(chat.getToUsername(),"/reply", chat);
 		}
-		
-		
+
 	}
 	
 	@RequestMapping("/chatBox")
@@ -101,7 +102,12 @@ public class ChatController {
 	@RequestMapping("/GetAllUserList")
 	@ResponseBody
 	public List<UserProfile> getAllUserList(HttpServletRequest request) {
-				
+		
+		if(request.getSession().getAttribute("username") == null || ((String)request.getSession().getAttribute("username")).length()==0)
+		{
+			return null;
+		}
+		
 		List<UserProfile> users = null;
 		
 		try {
@@ -116,4 +122,30 @@ public class ChatController {
 		
 	}
 	
-}
+	@RequestMapping("/GetUsersState")
+	@ResponseBody
+	public HashMap<String,Boolean> getUserState(HttpServletRequest request) {
+		
+		if(request.getSession().getAttribute("username") == null || ((String)request.getSession().getAttribute("username")).length()==0)
+		{
+			return null;
+		}
+		
+		HashMap<String,Boolean> hashmap =  null;
+		
+		try {
+			hashmap = userService.getUsersState();
+		}
+		catch(Exception ex) {
+			System.out.println("Exception " + ex);
+		}
+		finally {
+			return hashmap;
+		}
+
+	}
+	
+	
+	
+
+	}

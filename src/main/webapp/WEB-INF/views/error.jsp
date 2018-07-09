@@ -8,7 +8,22 @@
 </head>
 <body>
 
-You are not authorized to see previous page.
+You are not authorized see this page.
+Redirecting you to login page in <span id="timeRemaining">5</span> seconds.
+
+<script type="text/javascript">
+	//window.setTimeout(function(){ window.location = "/ROOT/login/login"; },3000);
+	
+	var count = 5;
+setInterval(function(){
+    count--;
+    document.getElementById('timeRemaining').innerHTML = count;
+    if (count == 0) {
+        window.location = '/ROOT/login/login'; 
+    }
+},1000);
+	
+</script>
 
 </body>
 </html>

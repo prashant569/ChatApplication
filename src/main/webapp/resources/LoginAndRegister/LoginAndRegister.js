@@ -83,7 +83,7 @@ $(function() {
 			
 			 $.ajax({
 			        url: "checkForExistingUsername",
-			        type: "GET",
+			        type: "POST",
 			        async: false, //block until we get a response
 			        data: { username : $("#register-form #username").val() },
 			        success: function(error) {

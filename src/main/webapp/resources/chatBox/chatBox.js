@@ -2,10 +2,8 @@ $(function(){
 	
 	var username = $('.navbar-right #username').text();	// get the text - Welcome username
 	username = username.substring(8,username.length); // gets the username part , trims off Welcome part
-	
-	//console.log("username = "+username);
 	var userList = null;
-	var socket = null;
+	var socket = null , socket1 = null , stompClient1 = null;
 
 	if(username !== null && username.length>0) {
 		
@@ -15,7 +13,6 @@ $(function(){
 			async: true,
 			data : {},
 			success: function(result) {
-				//console.log("successfully fethed allUserList");
 				var firstUsername = null;
 				if(result.length>0) {
 					userList = result;
@@ -30,56 +27,59 @@ $(function(){
 				if(firstUsername !== null) {
 					$('.sideBar-body'+ '#' + firstUsername).click();
 				}
-				
 				openWebSocketAndSubscribe(userList);
 			}
 		});
 	}
-		
-	
 
 var openWebSocketAndSubscribe = function(userList) {
 		
 	if(socket==null && username !== null && username.length>0) {
 	    socket = new SockJS('../chatBox/chat-websocket');
-	    stompClient = Stomp.over(socket);
-	  	    
+	    stompClient = Stomp.over(socket);   
 	    stompClient.connect({}, function (frame) {
-	    	console.log('Connected frame : ' + frame);
 
 	    	stompClient.subscribe('/user/allusersgroup/reply', function (chat) {
-	        	//console.log("chat =  " + chat);
 	        	var chatBody = JSON.parse(chat.body);
-	        	//console.log("chat body = " + chat.body);
 	            showGreeting(chatBody.chatMessage,chatBody.fromUsername,"allusersgroup",chatBody.timeStamp);
 	        });
 	    	
 	       	 for(const user of userList) {
-	       		 //console.log(" in the looping = " + user.username);
 	       		stompClient.subscribe('/user/'+ user.username+'/reply', function (chat) {
-		        	//console.log("chat =  " + chat);
 		        	var chatBody = JSON.parse(chat.body);
-		        	//console.log("chat body = " + chat.body);
 		            showGreeting(chatBody.chatMessage,chatBody.fromUsername,user.username,chatBody.timeStamp);
 		        });
-	       	 }
-	       	 
-	       	 	       	 
-	    });		
+	       	 }       	 
+	    });	
+
+	    socket1 = new SockJS('../chatBox/userstate-websocket');
+	    stompClient1 = Stomp.over(socket1);
+	    
+	    stompClient1.connect({}, function (frame) {
+	    	stompClient1.subscribe('/topic/userstate', function (usersState) {
+	    		var userstate = JSON.parse(usersState.body);
+	    		
+	    		for(const key in userstate) {					
+					if(key===username)
+						continue;    /// skipping the current logged in user
+					
+					if(userstate[key]==false)	    		
+		    			$('#'+key +'.heading-online')[0].textContent = "Offline" ;
+		    		else
+		    			$('#'+key +'.heading-online')[0].textContent = "Online" ;
+	    		}
+	        });       	 
+	    });		    
 	}
 }
 	
 	
 	function showGreeting(message,fromUsername,toUsername,timeStamp) {
-		//console.log("in the showGreeting");
-	   // console.log(" message = " + message);
-	    
-
 	    if(fromUsername===username) {
 	    
 	    	var divAndReply = '<div class="row message-body">';
 	          divAndReply += '<div class="col-sm-12 message-main-sender">';
-	          divAndReply += '<div class="sender">';
+	          divAndReply += '<div class="sender">';	          
 	          divAndReply += '<div class="message-text">';
 	          divAndReply +=   message;
 	          divAndReply +=   '</div>';
@@ -92,47 +92,43 @@ var openWebSocketAndSubscribe = function(userList) {
 	    	
 	          if(toUsername==="allusersgroup") {
 	        	 $('.message '+'#allusersgroup').append(divAndReply);
-	        	  console.log($('.message'+'#allusersgroup'));
 	    		}
 	          else {
 	        	  $('.message '+'#'+fromUsername+toUsername).append(divAndReply);
 	          }
-	    	 
-		    		    	 
-	    	
 	    }
 	    else {
 
-	    	var divAndReply1 = '<div class="row message-body">';
-	          divAndReply1 += '<div class="col-sm-12 message-main-receiver">';
-	          divAndReply1 += '<div class="receiver">';
-	          divAndReply1 += '<div class="message-text">';
-	          divAndReply1 +=   message;
-	          divAndReply1 +=   '</div>';
-	          divAndReply1 +=   '<span class="message-time pull-right">';
-	          divAndReply1 +=   timeStamp;
-	          divAndReply1 +=   ' </span>';
-	          divAndReply1 +=   '</div>';
-	          divAndReply1 +=   '</div>';
-	          divAndReply1 +=   ' </div>';
+	    	var divAndReply = '<div class="row message-body">';
+	          divAndReply += '<div class="col-sm-12 message-main-receiver">';
+	          divAndReply += '<div class="receiver">';
+	          if(toUsername==="allusersgroup") {
+		          divAndReply +=  '<div class="row-no-margin" >';
+		          divAndReply +=	fromUsername;
+		          divAndReply +=	'</div>';
+	          }
+	          divAndReply += '<div class="message-text">';
+	          divAndReply +=   message;
+	          divAndReply +=   '</div>';
+	          divAndReply +=   '<span class="message-time pull-right">';
+	          divAndReply +=   timeStamp;
+	          divAndReply +=   ' </span>';
+	          divAndReply +=   '</div>';
+	          divAndReply +=   '</div>';
+	          divAndReply +=   ' </div>';
 	    	
 	          if(toUsername==="allusersgroup") {
-	        	  $('.message '+'#allusersgroup').append(divAndReply1);
+	        	  $('.message '+'#allusersgroup').append(divAndReply);
 	        	  console.log($('.message'+'#allusersgroup'));
 	    		}
 	          else {
-	        	  $('.message '+'#'+toUsername+fromUsername).append(divAndReply1);
+	        	  $('.message '+'#'+toUsername+fromUsername).append(divAndReply);
 	          }
-	    	
-	    	 
-	    	
-	    	
 	    }	
 	    
 	    var mydiv = $("#conversation");
 	    mydiv.scrollTop(mydiv.prop("scrollHeight"));
 	  
-	    
 	    $('#comment')[0].value = '';
 	   
 	    	 
@@ -160,37 +156,22 @@ var openWebSocketAndSubscribe = function(userList) {
     
     $(".reply-send").click(function(e){
     	var message = $('#comment').val();
-    	console.log($(".heading-name-meta"));
-    	var toUsername = $(".heading-name-meta").attr('id');
-    	
+    	var toUsername = $(".heading-name-meta").attr('id');    	
     	var time = moment().format('LT'); 
-    	console.log("current time = " + time);
-    	
-    	//console.log('clicked on the send button');
-    	if(message !== null && message.length>0) {
-    		//console.log("message = " + message);   
+    	if(message !== null && message.length>0) {  
     		var text = JSON.stringify({'chatMessage': message,'toUsername': toUsername,'fromUsername': username, 'timeStamp': time})
-        	stompClient.send("/app/chat-websocket", {}, text);
-        	
-    	}   	
-
+        	stompClient.send("/app/chat-websocket", {}, text);        	
+    	}
     });
     
     
     $('.sideBar-body').click(function(){
-    	//console.log('you clicked on sideBar-body');
-    	var clickedUsername = $(this).attr('id');
-   
+    	var clickedUsername = $(this).attr('id');   
     	var firstName = $('#'+clickedUsername).find("#firstName")[0].innerHTML;
-    	var lastName = $('#'+clickedUsername).find("#lastName")[0].innerHTML;
+    	var lastName = $('#'+clickedUsername).find("#lastName")[0].innerHTML; 
     	
-    	console.log($('.heading-name-meta'));
-    	console.log($('.heading-name-meta').innerHTML);
-    	$('.heading-name-meta')[0].innerHTML = firstName + lastName;
-    	
-    	
+    	$('.heading-name-meta')[0].innerHTML = firstName + lastName;    	
     	$('.heading-name-meta').attr('id',clickedUsername);
-    	//console.log('you clicked on ' + clickedUsername);
     	
     	var divId = null;
     	
@@ -199,13 +180,26 @@ var openWebSocketAndSubscribe = function(userList) {
     	}
     	else {
     		divId  = username+clickedUsername;
-    	}
-    		
+    	}	
     	 $(".message").children().filter(':not(#'+divId+')').hide();
     	 $(".message").children().filter('#'+divId).show();
     
     });
     
-   
+    setInterval(function(){
+    	
+    	$.ajax({
+			url: "GetUsersState",
+			type: "GET",
+			async: true,
+			data : {},
+			success: function(result) {
+				stompClient1.send("/app/userstate-websocket", {}, JSON.stringify(result));			}
+    	})
+    	},3000); 
+    
+    
+    
+    
     
 })

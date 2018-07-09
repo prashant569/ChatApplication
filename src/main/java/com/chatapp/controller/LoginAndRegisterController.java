@@ -1,9 +1,18 @@
 package com.chatapp.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +31,9 @@ public class LoginAndRegisterController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	ChatController chatController;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showLoginForm1() {
@@ -44,7 +56,13 @@ public class LoginAndRegisterController {
 	}
 	
 	@RequestMapping(value="/login",method = RequestMethod.GET)
-	public ModelAndView showLoginForm() {
+	public ModelAndView showLoginForm(HttpServletRequest request) {
+		
+		if(request.getSession().getAttribute("username")!=null)	{
+			System.out.println("returning to chatbox");
+			return new ModelAndView("redirect:/chatBox/chatBox");
+		}
+		
 		ModelAndView mv = new ModelAndView();
 		System.out.println(" in the showLoginForm method");
 		mv.addObject("userProfile",new UserProfile());
@@ -55,7 +73,9 @@ public class LoginAndRegisterController {
 	
 	
 	@RequestMapping("/userLogin")
-	public String login(@ModelAttribute UserProfile userProfile,HttpServletRequest request) {
+	public void login(@ModelAttribute UserProfile userProfile,HttpServletRequest request,HttpServletResponse response) throws IOException, ScriptException {
+		
+		 RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 		
 		System.out.println(" in the login method");
 
@@ -72,23 +92,29 @@ public class LoginAndRegisterController {
 
 		boolean isMatched = userService.checkCredentials(userProfile.getUsername(), passwordSha256Hex);
 		
+		String targetUrl = null;
+		
 		if(isMatched) {
 			HttpSession session = request.getSession();
 			session.setAttribute("username", userProfile.getUsername());
 			session.setAttribute("firstName", loggedinUser.getFirstName());
 			session.setAttribute("lastName",loggedinUser.getLastName());
-			
 			session.setAttribute("isAdmin", loggedinUser.getIsAdmin());
 			
 			System.out.println(" in java isAdmin = " + loggedinUser.getIsAdmin());
 			
+			userService.updateUserState(userProfile.getUsername(),true);			
+			targetUrl = "/chatBox/chatBox";
 			
-			
-			return "redirect:/chatBox/chatBox";
 		}
 		else {
-			return "redirect:LoginAndRegister/LoginAndRegister";
+			System.out.println("credentials not matched");
+			targetUrl = "/LoginAndRegister/LoginAndRegister";
+		
+			
 		}
+
+		redirectStrategy.sendRedirect(request, response, targetUrl);
 		
 	}
 	
@@ -113,10 +139,8 @@ public class LoginAndRegisterController {
 	@RequestMapping("/logout")
 	public String logout(HttpServletRequest request) {
 		System.out.println(" in the logout method");
-
-		request.getSession().invalidate();
-		
-		System.out.println(" session = " + request.getSession() + request.getSession().getId());
+		userService.updateUserState(request.getSession().getAttribute("username").toString(),false);
+		request.getSession().invalidate();	
 		
 		return "redirect:/";
 	}
@@ -125,10 +149,7 @@ public class LoginAndRegisterController {
 	@ResponseBody
 	public String checkForExistingUsername(@RequestParam("username") String username) {
 		
-		System.out.println("in the checkForExistingUsername method");
-		
-		UserProfile user = null;
-		
+		UserProfile user = null;		
 		String errorMessage = null;
 		
 		try {
@@ -148,11 +169,9 @@ public class LoginAndRegisterController {
 		}	
 	}
 	
-	@RequestMapping("/checkForCredentials")
+	@RequestMapping(value="/checkForCredentials",method=RequestMethod.POST)
 	@ResponseBody
 	public boolean checkForCredentials(@RequestParam("username") String username,@RequestParam("password") String password) {
-		
-		System.out.println("in the checkForCredentials method");
 		
 		boolean isMatched = false;		
 		String errorMessage = null;
@@ -165,9 +184,7 @@ public class LoginAndRegisterController {
 			System.out.println("Exception :" + ex);
 			return false;
 		}
-		
-		finally {
-			System.out.println(" useranme = " + username + "   " + password);			
+		finally {		
 			if(isMatched) {
 				return true;
 			}
@@ -176,5 +193,6 @@ public class LoginAndRegisterController {
 			}			
 		}	
 	}
+	
 	
 }

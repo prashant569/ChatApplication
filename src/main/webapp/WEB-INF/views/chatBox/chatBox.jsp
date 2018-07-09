@@ -10,6 +10,7 @@
     <spring:url value="../resources/stomp.js" var="stompJsUrl"></spring:url> 
     <spring:url value="../resources/font-awesome-4.7.0/css/font-awesome.css" var="fontAwesomeCssUrl" />
     <spring:url value="../resources/moment.js" var="momentJsUrl"></spring:url>
+    <spring:url value="../resources/chatBox/avatar1.png" var = "imageURL"></spring:url>
     
 	<%@ include file="../commonFiles.jsp" %>
     
@@ -33,35 +34,30 @@
         <div class="row heading">
           <div class="col-sm-2 col-xs-3 heading-avatar">
             <div class="heading-avatar-icon">
-              <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
+              <img src="${imageURL}">
             </div>
           </div>
           <div class="col-sm-5 col-xs-7 heading-name">
           <a class="name-meta" id="${currentUser}"> ${firstName} ${lastName }</a>
           </div>
-          <div class="col-sm-1 col-xs-1  heading-dot  pull-right">
-            <i class="fa fa-ellipsis-v fa-2x  pull-right" aria-hidden="true"></i>
-          </div>
-          <div class="col-sm-2 col-xs-2 heading-compose  pull-right">
-            <i class="fa fa-comments fa-2x  pull-right" aria-hidden="true"></i>
-          </div>
         </div>
 
-        <div class="row searchBox">
-          <div class="col-sm-12 searchBox-inner">
-            <div class="form-group has-feedback">
-              <input id="searchText" type="text" class="form-control" name="searchText" placeholder="Search">
-              <span class="glyphicon glyphicon-search form-control-feedback"></span>
-            </div>
-          </div>
-        </div>
-
+		<div class="row searchBox">
+		<!-- 
+		          <div class="col-sm-12 searchBox-inner">
+		            <div class="form-group has-feedback">
+		              <input id="searchText" type="text" class="form-control" name="searchText" placeholder="Search">
+		              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+		            </div>
+		          </div>		        
+		 -->
+		 </div>
         <div class="row sideBar">
         
         <div class="row sideBar-body" id="allusersgroup" >
             <div class="col-sm-3 col-xs-3 sideBar-avatar">
               <div class="avatar-icon">
-                <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
+                <img src="${imageURL}">
               </div>
             </div>
             <div class="col-sm-9 col-xs-9 sideBar-main">
@@ -69,10 +65,6 @@
                 <div class="col-sm-8 col-xs-8 sideBar-name">
                   <span class="name-meta" id="firstName">All Users </span>
                   <span class="name-meta" id="lastName">Group </span>
-                </div>
-                <div class="col-sm-4 col-xs-4 pull-right sideBar-time">
-                  <span class="time-meta pull-right">Time
-                </span>
                 </div>
               </div>
             </div>
@@ -84,7 +76,7 @@
         	<div class="row sideBar-body" id="${user.username}" >
             <div class="col-sm-3 col-xs-3 sideBar-avatar">
               <div class="avatar-icon">
-                <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
+                <img src="${imageURL}">
               </div>
             </div>
             <div class="col-sm-9 col-xs-9 sideBar-main">
@@ -93,9 +85,8 @@
                   <span class="name-meta" id="firstName">${user.firstName} </span>
                   <span class="name-meta" id="lastName">${user.lastName} </span>
                 </div>
-                <div class="col-sm-4 col-xs-4 pull-right sideBar-time">
-                  <span class="time-meta pull-right">Time
-                </span>
+                <div class="col-sm-1 col-xs-1">
+                	<span class="heading-online" id="${user.username}">Offline</span>
                 </div>
               </div>
             </div>
@@ -113,43 +104,33 @@
       <div class="row heading">
         <div class="col-sm-2 col-md-1 col-xs-3 heading-avatar">
           <div class="heading-avatar-icon">
-            <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
+            <img src="${imageURL}">
           </div>
         </div>
         <div class="col-sm-8 col-xs-7 heading-name">
-          <a class="heading-name-meta">John Doe
+          <a class="heading-name-meta">
           </a>
-          <span class="heading-online">Online</span>
-        </div>
-        <div class="col-sm-1 col-xs-1  heading-dot pull-right">
-          <i class="fa fa-ellipsis-v fa-2x  pull-right" aria-hidden="true"></i>
+          <!--   <span class="heading-online">Offline</span> -->
         </div>
       </div>
 
 	  
       <div class="row message" id="conversation">
-       
        <div id="allusersgroup">      
 		</div>
 
 	<c:forEach items="${userList}" var="user">
-		<div id="${currentUser}${user.username}">      
+		<div id="${currentUser}${user.username}">		     
 		</div>		
 	</c:forEach>		
         
       </div>
 
       <div class="row reply">
-        <div class="col-sm-1 col-xs-1 reply-emojis">
-          <i class="fa fa-smile-o fa-2x"></i>
-        </div>
-        <div class="col-sm-9 col-xs-9 reply-main">
+        <div class="col-sm-11 col-xs-11 reply-main">
           <textarea class="form-control" rows="1" id="comment"></textarea>
         </div>
-        <div class="col-sm-1 col-xs-1 reply-recording">
-          <i class="fa fa-microphone fa-2x" aria-hidden="true"></i>
-        </div>
-        <div class="col-sm-1 col-xs-1 reply-send">
+        <div class="col-sm-1 col-xs-1 reply-send" style="text-align: center;">
           <i class="fa fa-send fa-2x" aria-hidden="true"></i>
         </div>
       </div>

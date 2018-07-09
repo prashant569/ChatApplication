@@ -1,12 +1,15 @@
 package com.chatapp.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.chatapp.model.UserProfile;
@@ -85,6 +88,34 @@ public class UserDaoImpl implements UserDao {
 				return true;
 		}
 	
+	}
+
+	@Override
+	public HashMap<String, Boolean> getUsersState() {		
+		HashMap<String,Boolean> hashmap = null;
+		List<UserProfile> users = null;
+		try {
+			users = mongoTemplate.findAll(UserProfile.class, COLLECTION_NAME);
+			hashmap = new HashMap<>();
+			for(UserProfile user : users) {
+				hashmap.put(user.getUsername(), user.isOnline());
+			}
+		}
+		catch(Exception ex) {
+			System.out.println("Exception = " + ex);
+		}
+		finally {
+			return hashmap;
+		}
+	}
+
+	@Override
+	public void updateUserState(String username, boolean isOnline) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("username").is(username));
+		Update update = new Update();
+		update.set("isOnline", isOnline);
+		mongoTemplate.findAndModify(query, update,UserProfile.class,COLLECTION_NAME);
 	}
 	
 }

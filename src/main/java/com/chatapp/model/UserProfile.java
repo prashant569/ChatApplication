@@ -14,8 +14,18 @@ public class UserProfile {
 	private String username;
 	private String password;
 	private String isAdmin;
+	private boolean isOnline;
 
 	
+	
+	public boolean isOnline() {
+		return isOnline;
+	}
+
+	public void setOnline(boolean isOnline) {
+		this.isOnline = isOnline;
+	}
+
 	public UserProfile() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -27,6 +37,8 @@ public class UserProfile {
 		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
+		this.isAdmin = "no";
+		this.isOnline = false;
 	}
 
 	public UserProfile(String username, String password) {
@@ -80,5 +92,7 @@ public class UserProfile {
 		this.isAdmin = isAdmin;
 	}
 
+
+	
 	
 }
