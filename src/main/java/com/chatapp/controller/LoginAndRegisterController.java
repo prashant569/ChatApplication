@@ -38,7 +38,6 @@ public class LoginAndRegisterController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showLoginForm1() {
 		ModelAndView mv = new ModelAndView();
-		System.out.println(" in the showLoginForm method");
 		mv.addObject("userProfile",new UserProfile());
 		mv.addObject("loginFormClassValue","active");
 		mv.setViewName("LoginAndRegister/LoginAndRegister");
@@ -48,7 +47,6 @@ public class LoginAndRegisterController {
 	@RequestMapping(value="/register")
 	public ModelAndView showRegisterForm() {
 		ModelAndView mv = new ModelAndView();
-		System.out.println(" in the showRegisterForm method");
 		mv.addObject("userProfile",new UserProfile());
 		mv.addObject("registerFormClassValue","active");
 		mv.setViewName("LoginAndRegister/LoginAndRegister");
@@ -59,12 +57,10 @@ public class LoginAndRegisterController {
 	public ModelAndView showLoginForm(HttpServletRequest request) {
 		
 		if(request.getSession().getAttribute("username")!=null)	{
-			System.out.println("returning to chatbox");
 			return new ModelAndView("redirect:/chatBox/chatBox");
 		}
 		
 		ModelAndView mv = new ModelAndView();
-		System.out.println(" in the showLoginForm method");
 		mv.addObject("userProfile",new UserProfile());
 		mv.addObject("loginFormClassValue","active");
 		mv.setViewName("LoginAndRegister/LoginAndRegister");
@@ -75,21 +71,11 @@ public class LoginAndRegisterController {
 	@RequestMapping("/userLogin")
 	public void login(@ModelAttribute UserProfile userProfile,HttpServletRequest request,HttpServletResponse response) throws IOException, ScriptException {
 		
-		 RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-		
-		System.out.println(" in the login method");
-
+		RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 		UserProfile loggedinUser = userService.findUserByUsername(userProfile.getUsername());
-		
-		System.out.println(" username = " + userProfile.getUsername() 
-		+ " firstName = " + loggedinUser.getFirstName()
-		+ "lastName = " + loggedinUser.getLastName());
 		
 		// sha 256 password encryption using Apache Commons Codec » 1.9
 		String passwordSha256Hex = org.apache.commons.codec.digest.DigestUtils.sha256Hex(userProfile.getPassword()); 
-		
-		System.out.println("hashed password  = " +   passwordSha256Hex);
-
 		boolean isMatched = userService.checkCredentials(userProfile.getUsername(), passwordSha256Hex);
 		
 		String targetUrl = null;
@@ -101,17 +87,11 @@ public class LoginAndRegisterController {
 			session.setAttribute("lastName",loggedinUser.getLastName());
 			session.setAttribute("isAdmin", loggedinUser.getIsAdmin());
 			
-			System.out.println(" in java isAdmin = " + loggedinUser.getIsAdmin());
-			
 			userService.updateUserState(userProfile.getUsername(),true);			
 			targetUrl = "/chatBox/chatBox";
-			
 		}
 		else {
-			System.out.println("credentials not matched");
 			targetUrl = "/LoginAndRegister/LoginAndRegister";
-		
-			
 		}
 
 		redirectStrategy.sendRedirect(request, response, targetUrl);
@@ -121,16 +101,9 @@ public class LoginAndRegisterController {
 	
 	@RequestMapping("/userRegister")
 	public String register(@ModelAttribute UserProfile userProfile) {
-		
-		System.out.println(" in the register method");
 
-		System.out.println(" username = " + userProfile.getUsername() + " password = " + userProfile.getPassword());
-		
 		// sha 256 password encryption using Apache Commons Codec » 1.9
 		String passwordSha256Hex = org.apache.commons.codec.digest.DigestUtils.sha256Hex(userProfile.getPassword()); 
-		
-		System.out.println("hashed password  = " +   passwordSha256Hex);
-		
 		userService.add(new UserProfile(userProfile.getFirstName(),userProfile.getLastName(),userProfile.getUsername(), passwordSha256Hex));
 
 		return "redirect:/login/login";
@@ -138,10 +111,8 @@ public class LoginAndRegisterController {
 	
 	@RequestMapping("/logout")
 	public String logout(HttpServletRequest request) {
-		System.out.println(" in the logout method");
 		userService.updateUserState(request.getSession().getAttribute("username").toString(),false);
-		request.getSession().invalidate();	
-		
+		request.getSession().invalidate();			
 		return "redirect:/";
 	}
 	
@@ -161,7 +132,6 @@ public class LoginAndRegisterController {
 		}
 		
 		finally {
-			System.out.println(" user = " + user.getUsername() + "   " + user.getPassword());
 			if(user != null) {
 				errorMessage = "Username already exist";
 			}

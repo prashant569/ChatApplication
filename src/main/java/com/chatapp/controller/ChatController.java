@@ -46,17 +46,12 @@ public class ChatController {
 	@SendTo("/topic/userstate")
 	public HashMap<String,Boolean> sendUserState(HashMap<String,Boolean> userstate) {
 
-		System.out.println("in the send User State method = "+ userstate);	
-		
-		//simpMessagingTemplate.convertAndSend("userstate", chat);
 		return userstate;
 	}
 	
 
 	@MessageMapping("/chat-websocket")
-	public void sendReply(Chat chat) {
-
-		System.out.println("in the send reply method");		
+	public void sendReply(Chat chat) {	
 		
 		if(chat.getToUsername().equals("allusersgroup")) {
 			simpMessagingTemplate.convertAndSendToUser("allusersgroup","/reply", chat);
@@ -75,7 +70,6 @@ public class ChatController {
 		String username = (String)session.getAttribute("username");
 		if(username != null)	{
 			users.removeIf(x -> x.getUsername().equals(username));
-			System.out.println("users = "+ users);
 			mv.addObject("userList",users);
 			mv.addObject("currentUser", username);
 		}
@@ -144,8 +138,6 @@ public class ChatController {
 		}
 
 	}
-	
-	
-	
+
 
 	}

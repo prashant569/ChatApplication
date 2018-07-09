@@ -21,7 +21,6 @@ public class UserController {
 
 	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public ModelAndView list() {
-		System.out.println("in the user controller - list method");
 		ModelAndView model = new ModelAndView("user/list");
 		model.addObject("listUser",userService.listUser());
 		return model;
@@ -29,7 +28,6 @@ public class UserController {
 
 	@RequestMapping(value="/form", method=RequestMethod.GET)
 	public ModelAndView add() {
-		System.out.println("getting the form request");
 		ModelAndView model = new ModelAndView("user/form");
 		model.addObject("userform", new UserProfile());
 		return model;
@@ -43,10 +41,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public String save(@ModelAttribute("userform") UserProfile user) {
-		
-		System.out.println("in user controller - going to save user");
-		
+	public String save(@ModelAttribute("userform") UserProfile user) {		
 		if(user.getId() != null && !user.getId().trim().equals("")){
 			//update
 			userService.update(user);
@@ -60,12 +55,10 @@ public class UserController {
 	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
 	public String delete(@ModelAttribute("id") String id) {
-		System.out.println(" in the delete method , id = " + id);
 		UserProfile user = userService.findUserById(id);
 		System.out.println(" going to delete user = " + user.getId() + "  " + user.getName());
 		userService.delete(user);
 		return "redirect:/user/list";
 	}
-	
 	
 }
