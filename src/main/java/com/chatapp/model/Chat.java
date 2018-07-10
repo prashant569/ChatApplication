@@ -10,9 +10,6 @@ public class Chat {
 	public Chat() {		
 	}
 
-
-	
-
 	public Chat(String chatMessage, String fromUsername, String toUsername, String timeStamp) {
 		super();
 		this.chatMessage = chatMessage;
@@ -20,9 +17,6 @@ public class Chat {
 		this.toUsername = toUsername;
 		this.timeStamp = timeStamp;
 	}
-
-
-
 
 	public String getTimeStamp() {
 		return timeStamp;

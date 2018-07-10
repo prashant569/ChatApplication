@@ -18,4 +18,5 @@ public interface UserService {
 	public boolean checkCredentials(String username,String password);
 	public HashMap<String,Boolean> getUsersState();
 	public void updateUserState(String username, boolean isOnline);
+	
 }

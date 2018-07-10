@@ -2,14 +2,11 @@ package com.chatapp.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import com.chatapp.model.Chat;
 import com.chatapp.model.UserProfile;
 import com.chatapp.service.UserService;
-
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -27,20 +24,6 @@ public class ChatController {
 	private SimpMessagingTemplate simpMessagingTemplate;
 	@Autowired
 	private UserService userService;
-	
-	/**
-	@MessageMapping("/chat-websocket")
-	@SendTo("/topic/greetings")
-	public Chat sayHi(Chat chat) throws Exception {
-		System.out.println("in the chat controller - sayHi method");
-		
-		//Thread.sleep(1000);
-		System.out.println(chat.getChatMessage());
-		return new Chat(chat.getChatMessage());
-		
-		//return user.getName().toString() + " :  " + chat.getChatMessage().toString();		
-	}
-	**/
 	
 	@MessageMapping("/userstate-websocket")
 	@SendTo("/topic/userstate")
@@ -119,6 +102,7 @@ public class ChatController {
 	@RequestMapping("/GetUsersState")
 	@ResponseBody
 	public HashMap<String,Boolean> getUserState(HttpServletRequest request) {
+		
 		
 		if(request.getSession().getAttribute("username") == null || ((String)request.getSession().getAttribute("username")).length()==0)
 		{

@@ -19,7 +19,7 @@ setInterval(function(){
     count--;
     document.getElementById('timeRemaining').innerHTML = count;
     if (count == 0) {
-        window.location = '/ROOT/login/login'; 
+        window.location = '../login/login'; 
     }
 },1000);
 	

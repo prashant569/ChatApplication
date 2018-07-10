@@ -1,10 +1,6 @@
 package com.chatapp.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -87,7 +83,10 @@ public class LoginAndRegisterController {
 			session.setAttribute("lastName",loggedinUser.getLastName());
 			session.setAttribute("isAdmin", loggedinUser.getIsAdmin());
 			
-			userService.updateUserState(userProfile.getUsername(),true);			
+			userService.updateUserState(userProfile.getUsername(),true);
+			
+			//HashMap<String,Boolean> hashmap = userService.updateUserStateAndGetUsersState(userProfile.getUsername(),true);
+			
 			targetUrl = "/chatBox/chatBox";
 		}
 		else {

@@ -2,9 +2,7 @@ package com.chatapp.dao;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -13,9 +11,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.chatapp.model.UserProfile;
-
-
-
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -117,5 +112,6 @@ public class UserDaoImpl implements UserDao {
 		update.set("isOnline", isOnline);
 		mongoTemplate.findAndModify(query, update,UserProfile.class,COLLECTION_NAME);
 	}
+	
 	
 }

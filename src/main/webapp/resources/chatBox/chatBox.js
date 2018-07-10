@@ -56,6 +56,7 @@ var openWebSocketAndSubscribe = function(userList) {
 	    stompClient1 = Stomp.over(socket1);
 	    
 	    stompClient1.connect({}, function (frame) {
+	    	
 	    	stompClient1.subscribe('/topic/userstate', function (usersState) {
 	    		var userstate = JSON.parse(usersState.body);
 	    		
@@ -68,7 +69,9 @@ var openWebSocketAndSubscribe = function(userList) {
 		    		else
 		    			$('#'+key +'.heading-online')[0].textContent = "Online" ;
 	    		}
-	        });       	 
+	        });     
+	   
+	    	
 	    });		    
 	}
 }
@@ -194,12 +197,9 @@ var openWebSocketAndSubscribe = function(userList) {
 			async: true,
 			data : {},
 			success: function(result) {
-				stompClient1.send("/app/userstate-websocket", {}, JSON.stringify(result));			}
+				stompClient1.send("/app/userstate-websocket", {}, JSON.stringify(result));			
+			}
     	})
     	},5000); 
-    
-    
-    
-    
     
 })

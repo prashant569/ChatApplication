@@ -120,7 +120,7 @@
 		</div>
 
 	<c:forEach items="${userList}" var="user">
-		<div id="${currentUser}${user.username}">		     
+		<div id="${currentUser}${user.username}" >		     
 		</div>		
 	</c:forEach>		
         

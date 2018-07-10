@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.chatapp.model.UserProfile;
 
 /**
  * Basic Spring MVC controller that handles all GET requests.
