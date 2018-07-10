@@ -196,7 +196,7 @@ var openWebSocketAndSubscribe = function(userList) {
 			success: function(result) {
 				stompClient1.send("/app/userstate-websocket", {}, JSON.stringify(result));			}
     	})
-    	},3600000); 
+    	},5000); 
     
     
     
