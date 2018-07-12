@@ -110,9 +110,18 @@ public class LoginAndRegisterController {
 	
 	@RequestMapping("/logout")
 	public String logout(HttpServletRequest request) {
-		userService.updateUserState(request.getSession().getAttribute("username").toString(),false);
-		request.getSession().invalidate();			
-		return "redirect:/";
+		
+		try {
+			userService.updateUserState(request.getSession().getAttribute("username").toString(),false);			
+			request.getSession().invalidate();	
+		}
+		catch(Exception ex) {
+			System.out.println("Exception : " + ex);
+		}
+		finally {
+			return "redirect:/";
+		}
+		
 	}
 	
 	@RequestMapping("/checkForExistingUsername")

@@ -12,7 +12,7 @@ This application supports peer to peer chat and group chat.<br>
 There is one default group created for all the users who are registered.<br>
 
 
-Techonologies Used :<br>
+Technologies used :<br>
 Server side : Java 8, Spring MVC framework, Java based configuration <br>
 Frontend : HTML,CSS,JavaScript,JQuery,Bootstrap 3 <br>
 DB : MongoDb <br>

@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class UserProfile {
+public class UserProfile  {
 
 	@Id
 	private String id;
@@ -91,8 +91,5 @@ public class UserProfile {
 	public void setIsAdmin(String isAdmin) {
 		this.isAdmin = isAdmin;
 	}
-
-
-	
 	
 }

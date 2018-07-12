@@ -72,6 +72,10 @@ var openWebSocketAndSubscribe = function(userList) {
 	        });     
 	   
 	    	
+	    	// get logged in username
+	    	// send stomp client 1 message that he is "online"
+	    	// when log out is clicked , send stomp client 1 message that he is "offline"
+	    	
 	    });		    
 	}
 }
